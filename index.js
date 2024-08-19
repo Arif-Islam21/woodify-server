@@ -26,6 +26,16 @@ async function run() {
     // await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
+
+    const database = client.db("woodify");
+    const craftCollection = database.collection("craftItems");
+
+    app.post("/craftData", async (req, res) => {
+      const craftData = req.body;
+      const result = await craftCollection.insertOne(craftData);
+      res.send(result);
+    });
+
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
