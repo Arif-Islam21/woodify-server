@@ -41,7 +41,6 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const result = await craftCollection.findOne(query);
       res.send(result);
-      console.log(query);
     });
 
     app.post("/craftData", async (req, res) => {
