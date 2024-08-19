@@ -30,6 +30,12 @@ async function run() {
     const database = client.db("woodify");
     const craftCollection = database.collection("craftItems");
 
+    app.get("/craftData", async (req, res) => {
+      const craftData = craftCollection.find();
+      const result = await craftData.toArray();
+      res.send(result);
+    });
+
     app.post("/craftData", async (req, res) => {
       const craftData = req.body;
       const result = await craftCollection.insertOne(craftData);
