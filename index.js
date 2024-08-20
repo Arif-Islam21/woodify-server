@@ -29,6 +29,7 @@ async function run() {
 
     const database = client.db("woodify");
     const craftCollection = database.collection("craftItems");
+    const userCollection = database.collection("userData");
 
     app.get("/craftData", async (req, res) => {
       const craftData = craftCollection.find();
@@ -38,9 +39,20 @@ async function run() {
 
     app.get("/craftData/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await craftCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.get("/userData", async (req, res) => {
+      const usrData = userCollection.find();
+      const result = await usrData.toArray();
+      res.send(result);
+    });
+
+    app.post("/userData", async (req, res) => {
+      const userData = req.body;
+      const result = await userCollection.insertOne(userData);
       res.send(result);
     });
 
