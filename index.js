@@ -63,8 +63,33 @@ async function run() {
     });
 
     app.put("/craftData/:id", async (req, res) => {
-      const id = req.params._id;
-      console.log(id);
+      const id = req.params.id;
+      const updatedCraft = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          userName: updatedCraft.userName,
+          email: updatedCraft.email,
+          craft_name: updatedCraft.craft_name,
+          image: updatedCraft.image,
+          category: updatedCraft.category,
+          shortDescription: updatedCraft.shortDescription,
+          Price: updatedCraft.Price,
+          rating: updatedCraft.rating,
+          customization: updatedCraft.customization,
+          processing_time: updatedCraft.processing_time,
+          StockStatus: updatedCraft.StockStatus,
+          creatorEmail: updatedCraft.creatorEmail,
+        },
+      };
+
+      const result = await craftCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(result);
     });
 
     app.delete("/craftData/:id", async (req, res) => {
